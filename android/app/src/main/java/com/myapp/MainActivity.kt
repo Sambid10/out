@@ -1,4 +1,4 @@
-package com.myapp
+package com.myapp.jk1
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
