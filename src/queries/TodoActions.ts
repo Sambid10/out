@@ -4,8 +4,11 @@ import { getAuth } from '@react-native-firebase/auth'
 
 export async function createTodo(title: string) {
   const uid = getAuth().currentUser?.uid
-  if (!uid) return
-  try{
+
+  if (!uid) {
+    throw new Error('User not authenticated')
+  }
+
   await firestore()
     .collection('users')
     .doc(uid)
@@ -13,10 +16,8 @@ export async function createTodo(title: string) {
     .add({
       title,
       completed: false,
-      createdAt: new Date().toISOString()
-    })}catch(err){
-      console.log(err)
-    }
+      createdAt: new Date().toISOString(),
+    })
 }
 
 export async function toggleTodo(id: string, completed: boolean) {

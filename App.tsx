@@ -3,7 +3,6 @@ import { Provider } from 'react-redux'
 import { store } from './src/store/store'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor } from "./src/store/store"
-import SplashScreen from './src/components/SplashScreen'
 import RootNavController from './src/navigation/RouteNavController'
 import { useEffect } from 'react'
 import { configureGoogleSignIn } from './src/config/googleAuth'

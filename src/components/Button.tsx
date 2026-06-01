@@ -1,17 +1,21 @@
 interface Props {
     btntitle: string
     onPress: () => void
+    loading?:boolean
 }
 import React from 'react'
 import { TouchableOpacity, Text } from 'react-native'
 import { StyleSheet } from 'react-native'
-export default function Button({ btntitle,onPress}: Props) {
+import { ActivityIndicator } from 'react-native-paper'
+export default function Button({ btntitle,onPress,loading}: Props) {
     return (
         <TouchableOpacity
+            disabled={loading}
             style={styles.btn}
             onPress={onPress}
         >
-            <Text style={styles.txt}>{btntitle}</Text>
+            {loading ? <ActivityIndicator color='white'/> : <Text style={styles.txt}>{btntitle}</Text>}
+            
         </TouchableOpacity>
     )
 }

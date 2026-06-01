@@ -27,7 +27,6 @@ export default function RootNavController() {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <StatusBar barStyle="light-content" />
-
             <NavigationContainer>
                 <ThemeProvider>
                     {user ? <RootStack /> : <AuthStack />}

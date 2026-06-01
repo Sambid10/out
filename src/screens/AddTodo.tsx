@@ -9,20 +9,32 @@ import Button from '../components/Button'
 import SafeAreaViewWrapper from '../components/SafeAreaViewWrapper'
 import KeyBoardAvoidingViewWrapper from '../components/KeyBoardAvoidingViewWrapper'
 import { useTheme } from '../context/ThemeContext'
+import { createTodo } from '../queries/TodoActions'
 
 export default function AddTodo() {
     const [todo, setTodo] = useState("")
-    const {theme}=useTheme()
+    const { theme } = useTheme()
+    const [loading, setLoading] = useState(false)
     const navigation =
         useNavigation<NativeStackNavigationProp<RootStackParamList>>()
-    const dispatch = useDispatch()
-    const add = () => {
-        if (todo.length === 0) {
-            Alert.alert("Empty todo...")
-            return
+    const add = async () => {
+        setLoading(true)
+        try {
+            if (todo.length === 0) {
+                Alert.alert("Empty todo...")
+                return
+            }
+            await createTodo(todo)
+            setLoading(false)
+            navigation.navigate('Home')
+        } catch (err) {
+            setLoading(false)
+            console.log(err)
+            Alert.alert("Failed to add Todo")
+        }finally{
+            setLoading(false)
         }
-        dispatch(addTodo({ todo }))
-        navigation.navigate('Home')
+
     }
     return (
         <SafeAreaViewWrapper>
@@ -33,14 +45,14 @@ export default function AddTodo() {
                     showsVerticalScrollIndicator={false}
                 >
                     <View style={styles.container}>
-                        <Text style={{ fontSize: 24,color:theme.colors.text }}>Add ur new Task!!</Text>
+                        <Text style={{ fontSize: 24, color: theme.colors.text }}>Add ur new Task!!</Text>
                         <TextInput
-                            onChangeText={(txt) => setTodo(txt)}
-                             style={[styles.txtinput, { backgroundColor: theme.colors.inputbg ,color:theme.colors.inputtxt}]}
+                            editable={!loading}                           onChangeText={(txt) => setTodo(txt)}
+                            style={[styles.txtinput, { backgroundColor: theme.colors.inputbg, color: theme.colors.inputtxt }]}
                             placeholderTextColor={"gray"}
                             placeholder='+ Add a task'
                         />
-                        <Button btntitle={'Add +'} onPress={add} />
+                        <Button loading={loading} btntitle={'Add +'} onPress={add} />
                     </View>
 
                 </ScrollView>
@@ -77,8 +89,8 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     container: {
-        flex:1,
-        justifyContent:"center",
+        flex: 1,
+        justifyContent: "center",
         display: "flex",
         alignItems: "center",
         gap: 12,
