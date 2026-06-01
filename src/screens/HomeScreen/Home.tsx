@@ -112,7 +112,6 @@ export default function Home() {
     ),
     [handleToggle, handleDelete, handleEdit, theme, mode]
   )
-  { loading && <ActivityIndicator /> }
 
   return (
     <BottomSheetModalProvider>
@@ -130,6 +129,7 @@ export default function Home() {
           }
           stickyHeaderIndices={[0]}
           ListEmptyComponent={
+            loading ? <ActivityIndicator/>  :
             <Text style={{ color: 'gray', textAlign: 'center', marginTop: 20 }}>
               No tasks...
             </Text>
