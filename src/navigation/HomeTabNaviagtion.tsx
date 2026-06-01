@@ -1,7 +1,8 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import Home from "../screens/HomeScreen/Home"
 import UpdateTodo from "../screens/UpdateTodo"
-const HomeStackNav = createNativeStackNavigator()
+import { HomeStackParamList } from "./navigationType"
+const HomeStackNav = createNativeStackNavigator<HomeStackParamList>()
 
 export default function HomeStack() {
     return (

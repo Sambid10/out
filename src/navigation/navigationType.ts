@@ -1,11 +1,11 @@
-
+import { NavigatorScreenParams } from '@react-navigation/native';
 export type HomeStackParamList = {
   Home: undefined
   EditTodo: { id: string }    
 }
 
 export type RootStackParamList = {
-  HomeTabs: undefined          
+  HomeTabs: NavigatorScreenParams<HomeStackParamList> 
   AddTodo: undefined
   Profile:undefined
 }

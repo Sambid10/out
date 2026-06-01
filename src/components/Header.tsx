@@ -2,9 +2,11 @@ import { View, Text, TouchableOpacity, Image, Switch, Pressable } from "react-na
 import { showAlert } from "../../utils/Alert"
 import { useTheme } from "../context/ThemeContext"
 import { getAuth, signOut } from "@react-native-firebase/auth"
-import { NativeStackNavigationProp } from "@react-navigation/native-stack"
-import { RootStackParamList } from "../navigation/navigationType"
+
+import { RootStackParamList} from "../navigation/navigationType"
 import { useNavigation } from "@react-navigation/native"
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
 export default function Header() {
     const { mode, toggleTheme } = useTheme()
     const { currentUser } = getAuth()

@@ -1,9 +1,7 @@
 import React, { useState, useMemo, useCallback, memo } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
-import { HomeStackParamList, RootStackParamList } from '../../navigation/navigationType'
+import { HomeStackParamList } from '../../navigation/navigationType'
 import SafeAreaViewWrapper from '../../components/SafeAreaViewWrapper'
 import { ListHeader } from './ListHeader'
 import { showAlert } from '../../../utils/Alert'
@@ -16,6 +14,12 @@ import { toggleTodo, deleteTodo } from "../../queries/todoQueries"
 
 export type filters = 'completed' | 'pending' | 'all'
 export const filterValues: filters[] = ['all', 'completed', 'pending']
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+
+type Props = NativeStackScreenProps<
+  HomeStackParamList,
+  'Home'
+>
 
 interface Todo {
   id: string
@@ -65,12 +69,10 @@ const TodoItem = memo(({ item, onToggle, onDelete, onEdit, theme, mode }: TodoIt
   </View>
 ))
 
-export default function Home() {
+export default function Home({navigation}:Props) {
   const { theme, mode } = useTheme()
   const [selectedFilter, setSelectedFilter] = useState<filters>('all')
   const { loading, todos } = useFetchTodos()
-  const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList>>()
-
   const sorted = useMemo(() => {
     const filtered = todos.filter((t) => {
       if (selectedFilter === 'completed') return t.completed
@@ -95,7 +97,7 @@ export default function Home() {
   }, [])
 
   const handleEdit = useCallback(
-    (id: string) => navigation.navigate("EditTodo", { id: id }),
+    (id: string) => navigation.navigate("EditTodo",{id}),
     [navigation]
   )
 
@@ -119,6 +121,7 @@ export default function Home() {
         <FlatList
           data={sorted}
           keyboardShouldPersistTaps="handled"
+          stickyHeaderIndices={[0]}
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ paddingHorizontal: 10, paddingBottom: 100 }}
           ListHeaderComponent={
@@ -127,8 +130,7 @@ export default function Home() {
               selectedFilter={selectedFilter}
             />
           }
-          stickyHeaderIndices={[0]}
-          ListEmptyComponent={
+        ListEmptyComponent={
             loading ? <ActivityIndicator/>  :
             <Text style={{ color: 'gray', textAlign: 'center', marginTop: 20 }}>
               No tasks...

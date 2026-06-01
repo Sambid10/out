@@ -24,7 +24,7 @@ export default function AddTodo() {
             }
             await createTodo(todo)
             setLoading(false)
-            navigation.navigate('HomeTabs')
+            navigation.navigate('HomeTabs',{screen:"Home"})
         } catch (err) {
             setLoading(false)
             console.log(err)

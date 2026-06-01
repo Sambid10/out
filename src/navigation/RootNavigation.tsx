@@ -10,8 +10,9 @@ import AddTodo from '../screens/AddTodo';
 import ProfileScreen from '../screens/ProfileScreen';
 import { useTheme } from '../context/ThemeContext';
 import HomeStack from './HomeTabNaviagtion';
+import { HomeStackParamList, RootStackParamList } from './navigationType';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<RootStackParamList>();
 
 function MyTabBar({ state, descriptors, navigation }) {
   const { theme } = useTheme();
@@ -107,7 +108,7 @@ export default function RootStack() {
         tabBar={(props) => <MyTabBar {...props} />}
       >
         <Tab.Screen
-          name="HomeTab"
+          name="HomeTabs"
           component={HomeStack}
           options={{
             tabBarLabel: 'Home',

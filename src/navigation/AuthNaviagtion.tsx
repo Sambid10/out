@@ -1,7 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthStackParamList } from './navigationType';
-import AuthScreen from '../screens/AuthScreen/SigninScreen';
 import SigninScreen from '../screens/AuthScreen/SigninScreen';
 import SignupScreen from '../screens/AuthScreen/SignupScreen';
 const Stack = createNativeStackNavigator<AuthStackParamList>();

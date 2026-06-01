@@ -1,22 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import firestore from '@react-native-firebase/firestore'
 import { getAuth } from '@react-native-firebase/auth'
-
 export interface Todo {
   id: string
   title: string
   completed: boolean
   createdAt: string
 }
-
 export function useFetchTodos() {
   const [todos, setTodos] = useState<Todo[]>([])
   const [loading, setLoading] = useState(true)
-
+  const cacheRef = useRef<string>("")
   useEffect(() => {
     const uid = getAuth().currentUser?.uid
     if (!uid) return
-
     const unsubscribe = firestore()
       .collection('users')
       .doc(uid)
@@ -27,12 +24,13 @@ export function useFetchTodos() {
           id: doc.id,
           ...doc.data()
         })) as Todo[]
+        const hash = JSON.stringify(data)
+        if (hash === cacheRef.current) return
+        cacheRef.current = hash
         setTodos(data)
         setLoading(false)
       })
-
-    return unsubscribe 
+    return unsubscribe
   }, [])
-
   return { todos, loading }
 }
