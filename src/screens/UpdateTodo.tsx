@@ -15,7 +15,7 @@ import Button from '../components/Button'
 import KeyBoardAvoidingViewWrapper from '../components/KeyBoardAvoidingViewWrapper'
 import { useTheme } from '../context/ThemeContext'
 import { useFetchTodos } from '../hooks/useFetchTodo'
-import { updateTodo } from '../queries/TodoActions'
+import { updateTodo } from '../queries/todoQueries'
 
 export default function UpdateTodo() {
     const { theme } = useTheme()

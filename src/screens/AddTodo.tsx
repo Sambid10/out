@@ -3,13 +3,11 @@ import { StyleSheet, TextInput, View, Text, Alert, ScrollView } from 'react-nati
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../navigation/navigationType'
-import { useDispatch } from 'react-redux'
-import { addTodo } from '../store/slices/TodoSlice'
 import Button from '../components/Button'
 import SafeAreaViewWrapper from '../components/SafeAreaViewWrapper'
 import KeyBoardAvoidingViewWrapper from '../components/KeyBoardAvoidingViewWrapper'
 import { useTheme } from '../context/ThemeContext'
-import { createTodo } from '../queries/TodoActions'
+import { createTodo } from '../queries/todoQueries'
 
 export default function AddTodo() {
     const [todo, setTodo] = useState("")
@@ -26,7 +24,7 @@ export default function AddTodo() {
             }
             await createTodo(todo)
             setLoading(false)
-            navigation.navigate('Home')
+            navigation.navigate('HomeTabs')
         } catch (err) {
             setLoading(false)
             console.log(err)

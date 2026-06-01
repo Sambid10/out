@@ -5,25 +5,23 @@ interface Props {
 }
 import { filterValues } from "./Home";
 import type { filters } from "./Home";
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from "react-native"
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, Alert } from "react-native"
 import {
     BottomSheetModal,
     BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import { RadioButton } from 'react-native-paper'
-import type { AppDispatch } from "../../store/store"
-import { addTodo } from "../../store/slices/TodoSlice"
 import { useCallback, useState } from "react"
 import React from "react"
 import { useRef } from "react"
 import { renderBackdrop } from "../../../utils/Backdrop";
 import { useTheme } from "../../context/ThemeContext";
-import { createTodo } from "../../queries/TodoActions";
+import { createTodo } from "../../queries/todoQueries";
 export const ListHeader = ({
     selectedFilter,
     setSelectedFilter
 }: Props) => {
-    const { mode, theme } = useTheme()
+    const { theme } = useTheme()
     const [todo, setTodo] = useState("")
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
     const handlePresentModalPress = useCallback(() => {
@@ -34,19 +32,51 @@ export const ListHeader = ({
     }, []);
     return (
         <View style={{ gap: 12, backgroundColor: theme.colors.background, paddingVertical: 12 }}>
-            <TextInput
-                placeholderTextColor="gray"
-                placeholder="+ Add a task"
-                returnKeyType="done"
-                value={todo}
-                style={[styles.input, { backgroundColor: theme.colors.inputbg ,color:theme.colors.inputtxt}]}
-                onChangeText={setTodo}
-                onSubmitEditing={async() => {
-                    if (todo.trim() === "") return
-                    await createTodo(todo)
-                    setTodo("")
+            <View
+                style={{
+                    position: "relative"
                 }}
-            />
+            >
+                <TextInput
+                    placeholderTextColor="gray"
+                    placeholder="+ Add a task"
+                    returnKeyType="done"
+                    value={todo}
+                    style={[styles.input, { backgroundColor: theme.colors.inputbg, color: theme.colors.inputtxt }]}
+                    onChangeText={setTodo}
+                    onSubmitEditing={async () => {
+                        if (todo.trim() === "") return
+                        await createTodo(todo)
+                        setTodo("")
+                    }}
+                />
+                <TouchableOpacity
+                    onPressIn={async () => {
+                        if (todo.trim() === "") return
+                        await createTodo(todo)
+                        setTodo("")
+                    }}
+                    style={
+                        {
+                            backgroundColor: theme.colors.card,
+                            position: "absolute",
+                            right: 0,
+                            height: "100%",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderWidth: 1,
+                            borderColor: "gray",
+                            borderTopRightRadius: 12,
+                            borderBottomRightRadius: 12,
+                            width: 50,
+                        }
+                    }
+                >
+                    <Text style={{ color: theme.colors.text, textAlign: "center", width: "100%", fontSize: 12 }}>Add</Text>
+                </TouchableOpacity>
+            </View>
+
             <View
                 style={{
                     display: "flex",
@@ -62,8 +92,8 @@ export const ListHeader = ({
                         gap: 8,
                     }}
                 >
-                    <Text style={{color:theme.colors.inputtxt}}>Your Tasks</Text>
-                    {selectedFilter && <Text style={{color:theme.colors.inputtxt}}>({selectedFilter})</Text>}
+                    <Text style={{ color: theme.colors.inputtxt }}>Your Tasks</Text>
+                    {selectedFilter && <Text style={{ color: theme.colors.inputtxt }}>({selectedFilter})</Text>}
                 </View>
 
 
@@ -73,10 +103,10 @@ export const ListHeader = ({
                         flexDirection: "row",
                         alignItems: "center",
                         gap: 8,
-                        
+
                     }}
                 >
-                    <Text style={{color:theme.colors.inputtxt}}>Filter</Text>
+                    <Text style={{ color: theme.colors.inputtxt }}>Filter</Text>
                     <TouchableOpacity
                         onPress={handlePresentModalPress}
                         style={{
@@ -87,7 +117,8 @@ export const ListHeader = ({
                             borderColor: "#8B5CF6",
                             display: "flex",
                             justifyContent: "center",
-                            alignItems: "center"
+                            alignItems: "center",
+
                         }}
                     >
                         <Text style={{
@@ -102,7 +133,7 @@ export const ListHeader = ({
                         ref={bottomSheetModalRef}
                         onChange={handleSheetChanges}
                     >
-                        <BottomSheetView style={[styles.contentContainer,{backgroundColor:theme.colors.background}]}>
+                        <BottomSheetView style={[styles.contentContainer, { backgroundColor: theme.colors.background }]}>
                             <RadioButton.Group
                                 value={selectedFilter}
                                 onValueChange={(value) => {
@@ -111,7 +142,7 @@ export const ListHeader = ({
                             >
                                 {filterValues.map((item) => (
                                     <RadioButton.Item
-                                        labelStyle={{color:theme.colors.text}}
+                                        labelStyle={{ color: theme.colors.text }}
                                         style={{ width: "100%" }}
                                         key={item}
                                         label={item.charAt(0).toUpperCase() + item.slice(1)}

@@ -1,11 +1,16 @@
-export type RootStackParamList = {
+
+export type HomeStackParamList = {
   Home: undefined
-  AddTodo: undefined,
-  UpdateTodo: { id: string } ,
-  DataScreen:undefined,
-  PokemonScreen:undefined
+  EditTodo: { id: string }    
 }
-export type AuthStackParamList ={
-  SigninScreen:undefined,
-  SignupScreen:undefined
+
+export type RootStackParamList = {
+  HomeTabs: undefined          
+  AddTodo: undefined
+  Profile:undefined
+}
+
+export type AuthStackParamList = {
+  SigninScreen: undefined
+  SignupScreen: undefined
 }

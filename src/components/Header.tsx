@@ -1,16 +1,19 @@
-import { View, Text, TouchableOpacity, Image, Switch } from "react-native"
+import { View, Text, TouchableOpacity, Image, Switch, Pressable } from "react-native"
 import { showAlert } from "../../utils/Alert"
 import { useTheme } from "../context/ThemeContext"
 import { getAuth, signOut } from "@react-native-firebase/auth"
+import { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import { RootStackParamList } from "../navigation/navigationType"
+import { useNavigation } from "@react-navigation/native"
 export default function Header() {
     const { mode, toggleTheme } = useTheme()
-    const {currentUser}=getAuth()
+    const { currentUser } = getAuth()
     const isDark = mode === "dark"
-
+    const navigation=useNavigation<NativeStackNavigationProp<RootStackParamList>>()
     const handleToggle = () => {
         toggleTheme()
     }
-    const handleSignout=async()=>{
+    const handleSignout = async () => {
         await signOut(getAuth())
     }
     const handleLogout = () => {
@@ -38,7 +41,7 @@ export default function Header() {
                 <Switch
                     value={isDark}
                     onValueChange={handleToggle}
-                    thumbColor={isDark ? "#fff" : "#000"}
+                    thumbColor={isDark ? "#fff" : "#8B5CF6"}
                     trackColor={{ false: "#ccc", true: "#8B5CF6" }}
                 />
                 <TouchableOpacity
@@ -56,17 +59,21 @@ export default function Header() {
                         ⎋
                     </Text>
                 </TouchableOpacity>
+                <Pressable 
+                onPress={()=>navigation.navigate("Profile")}
+                >
+                    <Image
+                        style={{
+                            borderRadius: 99,
+                            height: 40,
+                            width: 40,
+                            borderWidth: 1,
+                            borderColor: "#8B5CF6"
+                        }}
+                        source={{ uri: currentUser?.photoURL ?? `https://api.dicebear.com/7.x/thumbs/png?seed=${currentUser?.uid}` }}
+                    />
+                </Pressable>
 
-                <Image
-                    style={{
-                        borderRadius: 99,
-                        height: 40,
-                        width: 40,
-                        borderWidth: 1,
-                        borderColor: "#8B5CF6"
-                    }}
-                    source={{ uri: currentUser?.photoURL ?? `https://api.dicebear.com/7.x/thumbs/png?seed=${currentUser?.uid}` }}
-                />
             </View>
 
         </View>

@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator }
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
-import { RootStackParamList } from '../../navigation/navigationType'
+import { HomeStackParamList, RootStackParamList } from '../../navigation/navigationType'
 import SafeAreaViewWrapper from '../../components/SafeAreaViewWrapper'
 import { ListHeader } from './ListHeader'
 import { showAlert } from '../../../utils/Alert'
@@ -12,7 +12,7 @@ import { useTheme } from '../../context/ThemeContext'
 import { Theme } from '../../themes/colors'
 import { ThemeMode } from '../../context/ThemeContext'
 import { useFetchTodos } from '../../hooks/useFetchTodo'
-import { toggleTodo, deleteTodo } from "../../queries/TodoActions"
+import { toggleTodo, deleteTodo } from "../../queries/todoQueries"
 
 export type filters = 'completed' | 'pending' | 'all'
 export const filterValues: filters[] = ['all', 'completed', 'pending']
@@ -69,7 +69,7 @@ export default function Home() {
   const { theme, mode } = useTheme()
   const [selectedFilter, setSelectedFilter] = useState<filters>('all')
   const { loading, todos } = useFetchTodos()
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
+  const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList>>()
 
   const sorted = useMemo(() => {
     const filtered = todos.filter((t) => {
@@ -95,7 +95,7 @@ export default function Home() {
   }, [])
 
   const handleEdit = useCallback(
-    (id: string) => navigation.navigate('UpdateTodo', { id }),
+    (id: string) => navigation.navigate("EditTodo", { id: id }),
     [navigation]
   )
 
@@ -112,13 +112,14 @@ export default function Home() {
     ),
     [handleToggle, handleDelete, handleEdit, theme, mode]
   )
-  {loading && <ActivityIndicator/>}
+  { loading && <ActivityIndicator /> }
 
   return (
     <BottomSheetModalProvider>
       <SafeAreaViewWrapper>
         <FlatList
           data={sorted}
+          keyboardShouldPersistTaps="handled"
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ paddingHorizontal: 10, paddingBottom: 100 }}
           ListHeaderComponent={
@@ -135,9 +136,6 @@ export default function Home() {
           }
           renderItem={renderItem}
         />
-        <TouchableOpacity style={styles.fab} onPress={() => navigation.navigate('AddTodo')}>
-          <Text style={styles.fabText}>+</Text>
-        </TouchableOpacity>
       </SafeAreaViewWrapper>
     </BottomSheetModalProvider>
   )

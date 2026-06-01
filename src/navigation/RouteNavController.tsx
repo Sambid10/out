@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { StatusBar } from 'react-native'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
 import auth from '@react-native-firebase/auth'
-
 import RootStack from './RootNavigation'
 import AuthStack from './AuthNaviagtion'
 import { ThemeProvider } from '../context/ThemeContext'
@@ -22,16 +19,16 @@ export default function RootNavController() {
         return unsubscribe
     }, [])
 
-    if (loading) return <SplashScreen/>
+    if (loading) return <SplashScreen />
 
     return (
-        <GestureHandlerRootView style={{ flex: 1 }}>
-            <StatusBar barStyle="light-content" />
-            <NavigationContainer>
-                <ThemeProvider>
+        <>
+            <ThemeProvider>
+                <NavigationContainer>
                     {user ? <RootStack /> : <AuthStack />}
-                </ThemeProvider>
-            </NavigationContainer>
-        </GestureHandlerRootView>
+                </NavigationContainer>
+            </ThemeProvider>
+        </>
+
     )
 }

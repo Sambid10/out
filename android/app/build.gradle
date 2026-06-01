@@ -4,7 +4,7 @@ plugins {
     id "com.facebook.react"
     id "com.google.gms.google-services"
 }
-
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
 react {
     autolinkLibrariesWithApp()
 }
