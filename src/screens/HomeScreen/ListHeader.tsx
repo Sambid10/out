@@ -5,7 +5,7 @@ interface Props {
 }
 import { filterValues } from "./Home";
 import type { filters } from "./Home";
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, Alert } from "react-native"
+import { View, Text, TouchableOpacity, TextInput, StyleSheet } from "react-native"
 import {
     BottomSheetModal,
     BottomSheetView,
@@ -26,9 +26,6 @@ export const ListHeader = ({
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
     const handlePresentModalPress = useCallback(() => {
         bottomSheetModalRef.current?.present();
-    }, []);
-    const handleSheetChanges = useCallback((index: number) => {
-        console.log('handleSheetChanges', index);
     }, []);
     return (
         <View style={{ gap: 12, backgroundColor: theme.colors.background, paddingVertical: 12 }}>
@@ -131,7 +128,6 @@ export const ListHeader = ({
                     <BottomSheetModal
                         backdropComponent={renderBackdrop}
                         ref={bottomSheetModalRef}
-                        onChange={handleSheetChanges}
                     >
                         <BottomSheetView style={[styles.contentContainer, { backgroundColor: theme.colors.background }]}>
                             <RadioButton.Group
@@ -152,11 +148,8 @@ export const ListHeader = ({
                             </RadioButton.Group>
                         </BottomSheetView>
                     </BottomSheetModal>
-
                 </View>
-
             </View>
-
         </View>
     )
 }
